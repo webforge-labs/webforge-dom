@@ -1,4 +1,4 @@
-webforge-dom
-============
+php-jquery
+==========
 
-A very very very very very simple aproach to build an api like jquery for html (testing) in php.
+A very very very very very simple aproach to build an api like jquery for html testing in php
