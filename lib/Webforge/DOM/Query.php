@@ -81,11 +81,11 @@ class Query extends \Webforge\Collections\ArrayCollection {
           );
         } elseif ($arg2 instanceof \Psc\HTML\HTMLInterface) {
           return $this->constructSelector($arg1, xml::docPart($arg2->html()));
-        } elseif ($arg2 instanceof static) {
+        } elseif ($arg2 instanceof Query) {
           // das ist eher find() und nicht clone wie nur Query args
           return $this->constructSelector($arg1, xml::docPart($arg2->html())); 
         }
-      } elseif ($arg1 instanceof static) {
+      } elseif ($arg1 instanceof Query) {
         return $this->constructQuery($arg1, $arg2);
       }
     } elseif ($num === 1) {
@@ -95,7 +95,7 @@ class Query extends \Webforge\Collections\ArrayCollection {
         return $this->constructDOMDocument($arg1);
       } elseif ($arg1 instanceof DOMElement) {
         return $this->constructDOMElement($arg1);
-      } elseif ($arg1 instanceof static) {
+      } elseif ($arg1 instanceof Query) {
         return $this->constructQuery($arg1);
       }
     }
@@ -141,8 +141,8 @@ class Query extends \Webforge\Collections\ArrayCollection {
   /**
    * Clones a Query Object
    */
-  protected function constructQuery(self $query, $selector = NULL) {
-    if ($selector != NULL) {
+  protected function constructQuery(Query $query, $selector = NULL) {
+    if ($selector !== NULL) {
       throw new InvalidArgumentException('You must not provide a selector if query is first argument. Use find for that(!)');
     }
     $this->setSelector($query->getSelector());
@@ -183,6 +183,16 @@ class Query extends \Webforge\Collections\ArrayCollection {
     return $Query;
   }
 
+  /**
+   * Reduce the set of matched elements to the one at the specified index.
+   * 
+   * @return Query
+   */
+  public function eq($index) {
+    if ($index < 0) throw new InvalidArgumentException('I cannot do negative indizes!');
+    
+    return new static($this->get($index));
+  }
   
   /**
    * Sets and parses the selector
@@ -195,7 +205,8 @@ class Query extends \Webforge\Collections\ArrayCollection {
 
     $this->selector = $selector;
     $this->selector = str_replace(':first', ':nth-of-type(1)', $this->selector);
-    // nth-of-type is a nice alias for eq but its 1-based (eq ist 0-based)
+    // nth-of-type is a NOT nice alias for eq but its 1-based (eq ist 0-based)
+    // but its not the same! fix me!
     $this->selector = Preg::replace_callback(
       $this->selector, 
       '/:eq\(([0-9]+)\)/', 
@@ -263,6 +274,24 @@ class Query extends \Webforge\Collections\ArrayCollection {
   public function hasClass($class) {
     $classes = $this->attr('class');
     return in_array($class, explode(' ',$classes));
+  }
+
+  /**
+   * @return bool
+   */
+  public function isChecked() {
+    if (($el = $this->getElement(TRUE)) === NULL) return FALSE;
+    
+    return $el->attr('checked') === 'checked';
+  }
+
+  /**
+   * @return bool
+   */
+  public function isSelected() {
+    if (($el = $this->getElement(TRUE)) === NULL) return FALSE;
+    
+    return $el->attr('selected') === 'selected';
   }
 
   /**

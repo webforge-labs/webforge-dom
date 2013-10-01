@@ -72,6 +72,13 @@ HTML;
     $this->assertQueryObject(new Query($query), $this->doc, NULL);
   }
 
+  public function testConstructors_QueryAndSelector() {
+    $this->setExpectedException('InvalidArgumentException');
+
+    $query = new Query($this->doc);
+    new Query($query, 'something');
+  }
+
   // @params $selector, Query $query
   public function testConstructors_String_Query() {
     $this->assertQueryObject($query = new Query('form.main', $this->doc), $this->doc, 'form.main');
@@ -187,6 +194,20 @@ HTML;
     $firstInput = new Query('form.main fieldset.user-data.group input:first', $this->formHTML);
     $this->assertEquals(array('<input type="text" name="email" value="" />'), $firstInput->export());
   }
+
+  /*
+    @TODO: FIXME:
+
+   :first does return 3 elements here (nth of type ..)
+  public function testEQ0ReturnsQueryObjectWithIndex0() {
+    $first = $this->form->find('input:first');
+
+    $this->assertEquals(
+      $first->export(),
+      $this->form->find('input')->eq(0)->export(),
+    );
+  }
+  */
   
   public function testHasClassReturnsIfAttributeHasSomeClass() {
     $form = new Query('form.main', $this->formHTML);
@@ -200,6 +221,15 @@ HTML;
     $this->assertFalse($fieldset->hasClass('pass'));
   }
 
+  public function testIsCHeckedRepresentsHTMLAttribute() {
+    $this->assertTrue(Query::create('input', '<wrapper><input type="checkbox" checked="checked" /></wrapper')->isChecked());
+    $this->assertFalse(Query::create('input', '<wrapper><input type="checkbox" /></wrapper')->isChecked());
+  }
+
+  public function testIsSelectedRepresentsHTMLAttribute() {
+    $this->assertTrue(Query::create('option', '<wrapper><option selected="selected"></option></wrapper')->isSelected());
+    $this->assertFalse(Query::create('option', '<wrapper><option></option></wrapper')->isSelected());
+  }
 
   protected function assertQueryObject($query, \DOMDocument $doc, $selector) {
     $this->assertInstanceOf($this->fqn, $query, 'is not a query object');
