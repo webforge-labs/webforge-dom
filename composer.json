@@ -1,6 +1,6 @@
 {
-  "name":"webforge\/php-jquery",
-  "description":"A very very very very very simple aproach to build an api like jquery for html testing in php",
+  "name":"webforge/dom",
+  "description":"A very very very very very simple aproach to build an api like jquery for html (testing) in php",
   "license":"MIT",
   "authors":[
     {

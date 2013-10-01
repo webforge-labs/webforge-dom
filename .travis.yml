@@ -1,0 +1,19 @@
+language: php
+
+php:
+  - 5.3
+  - 5.4
+
+branches:
+  only:
+    - master
+
+before_install:
+  - composer self-update
+  - COMPOSER_ROOT_VERSION=dev-master composer install --dev --prefer-source --no-interaction
+
+script: phpunit
+
+notifications:
+  hipchat: 1fbdbbbaa517c485f935a6d72f1110@ps-webforge
+  mail: p.scheit@ps-webforge.com
