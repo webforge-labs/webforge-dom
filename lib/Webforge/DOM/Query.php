@@ -171,7 +171,7 @@ class Query extends \Webforge\Collections\ArrayCollection {
     $cnt = count($this);
     
     if ($cnt != 1) {
-      throw new \Psc\Exception('Kann bis jetzt nur find() auf Query-Objekten mit genau 1 Element. '.$this->selector.' ('.$cnt.')');
+      throw new Exception('Kann bis jetzt nur find() auf Query-Objekten mit genau 1 Element. '.$this->selector.' ('.$cnt.')');
     }
 
     // erstellt ein Objekt mit dem Document als unser Element
