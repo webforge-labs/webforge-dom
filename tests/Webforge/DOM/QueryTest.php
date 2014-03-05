@@ -237,4 +237,20 @@ HTML;
     $this->assertInstanceOf('DOMDocument', $query->getDocument());
     $this->assertEquals($selector, $query->getLiteralSelector(), 'Selector does not match');
   }
+
+  public function testOuterHTMLReturnsTheFullHTMLOfTheElement() {
+    $email = new Query('form.main fieldset.user-data.group input:first', $this->formHTML);
+    $this->assertEquals(
+      '<input type="text" name="email" value="" />',
+      $email->outerHtml()
+    );
+
+
+    $fs = new Query('form.main fieldset:first', $this->formHTML);
+    // its not formatted the same (sadly)
+    $this->assertEquals(
+      '<fieldset class="user-data group"><input type="text" name="email" value="" /><br /><br /><input type="text" name="name" value="" /><br /></fieldset>',
+      $fs->outerHtml()
+    );
+  }
 }

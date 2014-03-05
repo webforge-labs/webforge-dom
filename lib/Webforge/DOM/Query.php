@@ -326,6 +326,17 @@ class Query extends \Webforge\Collections\ArrayCollection {
   }
 
   /**
+   * Returns the whole HTML of the first matched element
+   * 
+   * @return string
+   */
+  public function outerHtml() {
+    if (($el = $this->getElement()) === NULL) return NULL;
+
+    return $el->ownerDocument->saveXML($el);
+  }
+
+  /**
    * Returns the first matched element as text
    * 
    * @return string
