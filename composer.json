@@ -10,7 +10,7 @@
   ],
   "minimum-stability":"dev",
   "require":{
-    "symfony/css-selector": "2.1.*@stable",
+    "symfony/css-selector": "2.4.*@stable",
     "webforge/collections": ">=1"
   },
   "autoload":{
