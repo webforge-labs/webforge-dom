@@ -27,6 +27,6 @@
     }
   },
   "require-dev": {
-    "webforge/testplate": "1.3.*@dev"
+    "webforge/testplate": ">=1"
   }
 }
