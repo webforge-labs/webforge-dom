@@ -52,27 +52,28 @@ $hiddenInput = Query::create('form.main', $this->html)->find('input[name="submit
 
 ```php
 $fieldsetUserData = Query::create('form.main', $this->html)->find('fieldset')->eq(0);
-
-// returns an instanceof Query with the html: '<fieldset class="user-data group"><input .. <br /><input ..<br /></fieldset>'
 ```
+returns an instanceof Query with the html: `<fieldset class="user-data group"><input .. <br /><input ..<br /></fieldset>`
 
 ```php
 $url = Query::create('a', '<a href="http://www.ps-webforge.com" class="def"></a>')->attr('href');
-
 // 'http://www.ps-webforge.com'
 ```
+works like the jquery `attr`
 
 ```php
 $innerHtml = Query::create('fieldset:first', $this->html)->html();
 
 // '<input type="text" name="email" value="" /><br /><br /><input type="text" name="name" value="" /><br />'
 ```
+Returns the html from all children combined.
 
 ```php
 $html = Query::create('fieldset:first [name="email"]', $this->html)->outerHtml();
 
 // '<input type="text" name="email" value="" />'
 ```
+Returns the html from the element and all its children combined.
 
 Note: The output from outerHtml() and html() is not exactly identical to the parts in the original html, because it is reformatted internally by the PHP-DOM functions.
 
@@ -87,6 +88,7 @@ $true = Query::create('fieldset:first', $this->html)->hasClass('group');
 ```php
 $false = Query::create('fieldset:first', $this->html)->hasClass('user-data.group');
 ```
+Checks if the element has a specific, single class.
 
 ## issues
 
