@@ -95,16 +95,6 @@ HTML;
     $this->assertTrue($input->getElement()->hasAttribute('value'));
   }
 
-  public function testAssertTagFromPHPUnitLikesOurResult() {
-    $this->assertTag(
-      array(
-        'tag'=>'form',
-        'attributes' => array('class'=>'main')
-      ), 
-      xml::export($this->form->getElement())
-    ); // export macht aus dem domElement einen HTML string, den phpunit braucht
-  }
-
   public function testFindReturnsAQueryAsWell() {
     $inputs = $this->form->find('input');
     $this->assertInstanceof($this->fqn, $inputs);
